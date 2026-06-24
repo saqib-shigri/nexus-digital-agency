@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>NEXUS | Blog - Insights & Stories</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #FFFFFF;
+      color: #111111;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+
+    /* Custom Mouse Trail */
+    .mouse-trail {
+      position: fixed;
+      width: 30px;
+      height: 30px;
+      border: 2px solid rgba(0,0,0,0.15);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transition: all 0.1s ease;
+    }
+    .trail-dot {
+      position: fixed;
+      width: 6px;
+      height: 6px;
+      background: #000;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+    }
+    @media (max-width: 768px) { .mouse-trail, .trail-dot { display: none; } }
+
+    /* WhatsApp Floating Button */
+    .whatsapp-float {
+      position: fixed;
+      bottom: 30px;
+      left: 30px;
+      width: 65px;
+      height: 65px;
+      background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 1000;
+      box-shadow: 0 5px 20px rgba(37, 211, 102, 0.4);
+      transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+      animation: pulse-whatsapp 2s infinite;
+    }
+    .whatsapp-float:hover { transform: scale(1.1); box-shadow: 0 10px 30px rgba(37, 211, 102, 0.6); }
+    .whatsapp-float i { font-size: 2.2rem; color: white; }
+    @keyframes pulse-whatsapp {
+      0%, 100% { box-shadow: 0 5px 20px rgba(37, 211, 102, 0.4); }
+      50% { box-shadow: 0 5px 30px rgba(37, 211, 102, 0.8); }
+    }
+    .whatsapp-tooltip {
+      position: absolute;
+      left: 75px;
+      background: #1a1a1a;
+      color: white;
+      padding: 8px 15px;
+      border-radius: 30px;
+      font-size: 0.8rem;
+      white-space: nowrap;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s;
+      font-weight: 500;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    .whatsapp-tooltip::before {
+      content: '';
+      position: absolute;
+      left: -8px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 0;
+      height: 0;
+      border-top: 8px solid transparent;
+      border-bottom: 8px solid transparent;
+      border-right: 8px solid #1a1a1a;
+    }
+    .whatsapp-float:hover .whatsapp-tooltip { opacity: 1; visibility: visible; }
+    @media (max-width: 768px) {
+      .whatsapp-float { width: 55px; height: 55px; bottom: 20px; left: 20px; }
+      .whatsapp-float i { font-size: 1.8rem; }
+      .whatsapp-tooltip { display: none; }
+    }
+
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: #F0F0F0; }
+    ::-webkit-scrollbar-thumb { background: #000; border-radius: 10px; }
+
+    section { padding: 100px 5%; position: relative; overflow: hidden; }
+    .container { max-width: 1400px; margin: 0 auto; }
+    @media (max-width: 768px) { section { padding: 70px 5%; } }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #000000 0%, #555555 50%, #000000 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      background-size: 200% auto;
+      animation: textShine 4s ease infinite;
+    }
+    @keyframes textShine {
+      0%, 100% { background-position: 0% center; }
+      50% { background-position: 100% center; }
+    }
+
+    .btn-primary {
+      background: #000000; color: #FFFFFF; border: none; padding: 16px 38px;
+      border-radius: 50px; font-weight: 600; cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(0,0,0,0.15); }
+    .btn-outline {
+      background: transparent; border: 1.5px solid rgba(0,0,0,0.2);
+      padding: 16px 38px; border-radius: 50px; font-weight: 600;
+      cursor: pointer; transition: all 0.3s ease;
+    }
+    .btn-outline:hover { border-color: #000; background: rgba(0,0,0,0.02); transform: translateY(-2px); }
+
+    .section-tag { display: inline-block; padding: 5px 16px; background: rgba(0,0,0,0.04); border-radius: 50px; font-size: 0.75rem; font-weight: 500; margin-bottom: 15px; }
+    .section-title { font-size: 2.8rem; font-weight: 800; margin-bottom: 20px; letter-spacing: -0.02em; }
+    @media (max-width: 768px) { .section-title { font-size: 2rem; } }
+
+    /* ===== NAVIGATION ===== */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 18px 5%;
+      background: rgba(255,255,255,0.98);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+    }
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    .desktop-nav { display: flex; gap: 45px; }
+    .desktop-nav a {
+      text-decoration: none;
+      color: #111;
+      font-weight: 500;
+      transition: opacity 0.3s;
+    }
+    .desktop-nav a:hover { opacity: 0.6; }
+    .desktop-nav a i { margin-right: 8px; }
+    .desktop-nav a.active { color: #6C63FF; }
+
+    .menu-toggle {
+      display: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 8px 12px;
+      color: #111;
+      z-index: 1001;
+    }
+    .mobile-nav {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 75%;
+      max-width: 320px;
+      height: 100vh;
+      background: #FFFFFF;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      transition: right 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+      z-index: 1000;
+      box-shadow: -10px 0 30px rgba(0,0,0,0.1);
+      padding: 40px 20px;
+      display: flex;
+    }
+    .mobile-nav.active { right: 0; }
+    .mobile-nav a {
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: #111;
+      text-decoration: none;
+      padding: 12px 20px;
+      width: 100%;
+      text-align: center;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    .mobile-nav a:hover { background: rgba(0,0,0,0.05); }
+    .mobile-nav a i { width: 20px; opacity: 0.6; }
+    .mobile-nav a.active { color: #6C63FF; }
+    .nav-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.3);
+      backdrop-filter: blur(3px);
+      z-index: 999;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+    .nav-overlay.active { opacity: 1; visibility: visible; }
+
+    @media (max-width: 768px) {
+      .desktop-nav { display: none !important; }
+      .menu-toggle { display: flex !important; align-items: center; justify-content: center; }
+    }
+    @media (min-width: 769px) {
+      .menu-toggle { display: none !important; }
+      .mobile-nav { display: none !important; }
+      .nav-overlay { display: none !important; }
+    }
+
+    .back-to-top {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 50px;
+      height: 50px;
+      background: #000;
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s;
+      z-index: 99;
+      border: none;
+    }
+    .back-to-top.show { opacity: 1; visibility: visible; }
+
+    /* ===== PAGE HERO ===== */
+    .page-hero {
+      min-height: 50vh;
+      display: flex;
+      align-items: center;
+      background: linear-gradient(135deg, #F8F9FA 0%, #FFFFFF 100%);
+      padding-top: 80px;
+    }
+    .page-hero h1 { font-size: 3.5rem; font-weight: 800; }
+    .page-hero p { font-size: 1.2rem; color: rgba(0,0,0,0.6); max-width: 600px; }
+    @media (max-width: 768px) {
+      .page-hero h1 { font-size: 2.2rem; }
+      .page-hero p { font-size: 1rem; }
+    }
+
+    /* ===== BLOG CATEGORY FILTER ===== */
+    .blog-filter {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 50px;
+    }
+    .filter-btn {
+      padding: 10px 24px;
+      background: transparent;
+      border: 1px solid rgba(0,0,0,0.1);
+      border-radius: 50px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+    }
+    .filter-btn:hover, .filter-btn.active {
+      background: #000;
+      color: #fff;
+      border-color: #000;
+      transform: translateY(-2px);
+    }
+
+    /* ===== BLOG CARD ===== */
+    .blog-card {
+      background: #FFFFFF;
+      border-radius: 28px;
+      overflow: hidden;
+      transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+      border: 1px solid rgba(0,0,0,0.06);
+      cursor: pointer;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.02);
+    }
+    .blog-card:hover {
+      transform: translateY(-12px);
+      box-shadow: 0 30px 50px rgba(0,0,0,0.08);
+      border-color: rgba(0,0,0,0.12);
+    }
+    .blog-img {
+      height: 240px;
+      overflow: hidden;
+      position: relative;
+    }
+    .blog-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+    }
+    .blog-card:hover .blog-img img {
+      transform: scale(1.08);
+    }
+    .blog-category {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      background: #000;
+      color: #fff;
+      padding: 6px 16px;
+      border-radius: 30px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      z-index: 1;
+    }
+    .blog-content {
+      padding: 25px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .blog-meta {
+      display: flex;
+      gap: 20px;
+      color: #999;
+      font-size: 0.8rem;
+      margin-bottom: 15px;
+    }
+    .blog-meta span { display: flex; align-items: center; gap: 5px; }
+    .blog-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      line-height: 1.4;
+    }
+    .blog-excerpt {
+      color: #666;
+      line-height: 1.6;
+      margin-bottom: 20px;
+      flex: 1;
+      font-size: 0.9rem;
+    }
+    .read-more {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #000;
+      text-decoration: none;
+      font-weight: 600;
+      transition: gap 0.3s;
+      margin-top: auto;
+      cursor: pointer;
+      border: none;
+      background: none;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+    }
+    .read-more:hover {
+      gap: 12px;
+    }
+
+    /* ===== ARTICLE DETAIL VIEW ===== */
+    .article-detail {
+      display: none;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 0;
+    }
+    .article-detail.active {
+      display: block;
+      animation: fadeIn 0.5s ease;
+    }
+    .article-detail .article-header {
+      margin-bottom: 40px;
+    }
+    .article-detail .article-header h1 {
+      font-size: 2.8rem;
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 20px;
+    }
+    .article-detail .article-header .article-meta {
+      color: #999;
+      font-size: 0.9rem;
+    }
+    .article-detail .article-header .article-meta span {
+      margin-right: 20px;
+    }
+    .article-detail .article-body {
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: #333;
+    }
+    .article-detail .article-body img {
+      width: 100%;
+      border-radius: 20px;
+      margin: 30px 0;
+    }
+    .article-detail .article-body h2 {
+      font-size: 1.8rem;
+      margin: 40px 0 20px;
+    }
+    .article-detail .article-body p {
+      margin-bottom: 20px;
+    }
+    .article-detail .article-body ul {
+      margin: 20px 0 30px 30px;
+    }
+    .article-detail .article-body ul li {
+      margin-bottom: 10px;
+    }
+    .article-author-box {
+      background: #F8F9FA;
+      border-radius: 24px;
+      padding: 30px;
+      margin-top: 50px;
+      display: flex;
+      align-items: center;
+      gap: 25px;
+      flex-wrap: wrap;
+    }
+    .article-author-box img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .back-to-blog {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: #000;
+      text-decoration: none;
+      font-weight: 600;
+      margin-bottom: 30px;
+      transition: gap 0.3s;
+    }
+    .back-to-blog:hover {
+      gap: 15px;
+    }
+
+    .blog-grid.hidden {
+      display: none !important;
+    }
+    .blog-filter.hidden {
+      display: none !important;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 768px) {
+      .article-detail .article-header h1 { font-size: 2rem; }
+      .article-detail .article-body { font-size: 0.95rem; }
+    }
+
+    /* ===== PAGINATION ===== */
+    .pagination {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 60px;
+    }
+    .page-btn {
+      width: 45px;
+      height: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(0,0,0,0.1);
+      border-radius: 50%;
+      cursor: pointer;
+      transition: all 0.3s;
+      background: #fff;
+      font-weight: 500;
+    }
+    .page-btn:hover, .page-btn.active {
+      background: #000;
+      color: #fff;
+      border-color: #000;
+      transform: translateY(-2px);
+    }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      background: #0A0A0A;
+      color: #FFFFFF;
+      padding: 70px 5% 30px;
+      position: relative;
+      overflow: hidden;
+    }
+    .footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #000, #fff, #000);
+      animation: borderGlow 3s linear infinite;
+    }
+    @keyframes borderGlow {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
+    }
+    .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; margin-bottom: 50px; }
+    .footer-logo { font-size: 1.8rem; font-weight: 800; margin-bottom: 20px; }
+    .footer-about { color: rgba(255,255,255,0.7); line-height: 1.6; margin-bottom: 20px; }
+    .footer-social { display: flex; gap: 15px; margin-top: 20px; }
+    .footer-social a {
+      width: 40px; height: 40px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s;
+      color: #fff;
+      text-decoration: none;
+    }
+    .footer-social a:hover { background: #fff; color: #000; transform: translateY(-5px); }
+    .footer-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 25px; position: relative; display: inline-block; }
+    .footer-title::after { content: ''; position: absolute; bottom: -8px; left: 0; width: 40px; height: 2px; background: #fff; }
+    .footer-links { list-style: none; }
+    .footer-links li { margin-bottom: 12px; }
+    .footer-links a { color: rgba(255,255,255,0.7); text-decoration: none; transition: all 0.3s; display: inline-block; }
+    .footer-links a:hover { color: #fff; transform: translateX(5px); }
+    .footer-contact-info { color: rgba(255,255,255,0.7); margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
+    .footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 30px; text-align: center; color: rgba(255,255,255,0.5); font-size: 0.85rem; }
+    @media (max-width: 768px) { .footer-grid { grid-template-columns: 1fr; gap: 40px; } }
+
+    /* ===== NEWSLETTER ===== */
+    .newsletter-section {
+      background: #F8F9FA;
+      padding: 80px 5%;
+      text-align: center;
+    }
+    .newsletter-section h2 { font-size: 2.5rem; font-weight: 700; margin-bottom: 15px; }
+    .newsletter-section p { color: #666; margin-bottom: 30px; }
+    .newsletter-input {
+      padding: 16px 24px;
+      border: 1px solid rgba(0,0,0,0.1);
+      border-radius: 50px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+      flex: 1;
+      min-width: 250px;
+      transition: all 0.3s;
+    }
+    .newsletter-input:focus {
+      outline: none;
+      border-color: #000;
+      box-shadow: 0 0 0 3px rgba(0,0,0,0.05);
+    }
+    .newsletter-form {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      justify-content: center;
+      max-width: 550px;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Mouse Trail -->
+<div class="mouse-trail"></div>
+<div class="trail-dot"></div>
+
+<!-- WhatsApp Floating Button -->
+<a href="https://wa.me/923215749975?text=Hello%21%20I%20want%20to%20know%20more%20about%20your%20services" target="_blank" class="whatsapp-float">
+  <i class="fab fa-whatsapp"></i>
+  <span class="whatsapp-tooltip">Chat with us on WhatsApp</span>
+</a>
+
+<!-- Back to Top -->
+<button class="back-to-top" id="backToTop"><i class="fas fa-arrow-up"></i></button>
+
+<!-- Navigation -->
+<nav>
+  <div class="nav-container">
+    <div style="font-size: 1.6rem; font-weight: 800;">
+      <span class="gradient-text">NEXUS</span>
+    </div>
+    <div class="desktop-nav">
+      <a href="index.html"><i class="fas fa-home"></i>Home</a>
+      <a href="services.html"><i class="fas fa-cogs"></i>Services</a>
+      <a href="work.html"><i class="fas fa-briefcase"></i>Work</a>
+      <a href="team.html"><i class="fas fa-users"></i>Team</a>
+      <a href="blog.html" class="active"><i class="fas fa-blog"></i>Blog</a>
+      <a href="contact.html"><i class="fas fa-envelope"></i>Contact</a>
+    </div>
+    <button class="menu-toggle" id="menuToggle">
+      <i class="fas fa-bars" id="menuIcon"></i>
+    </button>
+    <div class="mobile-nav" id="mobileNav">
+      <a href="index.html"><i class="fas fa-home"></i>Home</a>
+      <a href="services.html"><i class="fas fa-cogs"></i>Services</a>
+      <a href="work.html"><i class="fas fa-briefcase"></i>Work</a>
+      <a href="team.html"><i class="fas fa-users"></i>Team</a>
+      <a href="blog.html" class="active"><i class="fas fa-blog"></i>Blog</a>
+      <a href="contact.html"><i class="fas fa-envelope"></i>Contact</a>
+    </div>
+    <div class="nav-overlay" id="navOverlay"></div>
+  </div>
+</nav>
+
+<!-- Blog Hero -->
+<section class="page-hero">
+  <div class="container">
+    <div id="heroContent" data-aos="fade-up">
+      <span class="section-tag"><i class="fas fa-newspaper"></i> INSIGHTS & STORIES</span>
+      <h1>From Our <span class="gradient-text">Blog</span></h1>
+      <p>Insights, stories, and thought leadership from the Nexus team. Stay updated with the latest in digital innovation.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Blog Section -->
+<section id="blogSection">
+  <div class="container">
+    
+    <!-- Category Filter -->
+    <div class="blog-filter" id="blogFilter" data-aos="fade-up">
+      <button class="filter-btn active" data-filter="all">All Posts</button>
+      <button class="filter-btn" data-filter="ai">AI & Tech</button>
+      <button class="filter-btn" data-filter="design">Design</button>
+      <button class="filter-btn" data-filter="marketing">Marketing</button>
+      <button class="filter-btn" data-filter="business">Business</button>
+    </div>
+
+    <!-- Blog Grid -->
+    <div class="blog-grid" id="blogGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 35px;">
+      
+      <!-- Blog 1 -->
+      <div class="blog-card" data-category="ai" data-aos="fade-up" data-aos-delay="0" onclick="openArticle(0)">
+        <div class="blog-img">
+          <span class="blog-category">AI & Tech</span>
+          <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=600&h=400&fit=crop" alt="AI Tools">
+        </div>
+        <div class="blog-content">
+          <div class="blog-meta">
+            <span><i class="fas fa-user"></i> Sarah Khan</span>
+            <span><i class="fas fa-calendar"></i> Mar 10, 2024</span>
+            <span><i class="fas fa-clock"></i> 6 min</span>
+          </div>
+          <h3 class="blog-title">10 AI Tools That Will Transform Your Workflow in 2024</h3>
+          <p class="blog-excerpt">Discover the most powerful AI tools revolutionizing productivity and creativity across industries...</p>
+          <button class="read-more" onclick="event.stopPropagation(); openArticle(0)">Read Full Article <i class="fas fa-arrow-right"></i></button>
+        </div>
+      </div>
+
+      <!-- Blog 2 -->
+      <div class="blog-card" data-category="design" data-aos="fade-up" data-aos-delay="100" onclick="openArticle(1)">
+        <div class="blog-img">
+          <span class="blog-category">Design</span>
+          <img src="https://images.unsplash.com/photo-1561070791-2526d30994b5?w=600&h=400&fit=crop" alt="Design Trends">
+        </div>
+        <div class="blog-content">
+          <div class="blog-meta">
+            <span><i class="fas fa-user"></i> Iqra Aram</span>
+            <span><i class="fas fa-calendar"></i> Mar 5, 2024</span>
+            <span><i class="fas fa-clock"></i> 5 min</span>
+          </div>
+          <h3 class="blog-title">Minimalist Design Trends That Will Dominate 2024</h3>
+          <p class="blog-excerpt">Explore the emerging minimalist design trends shaping the future of digital experiences...</p>
+          <button class="read-more" onclick="event.stopPropagation(); openArticle(1)">Read Full Article <i class="fas fa-arrow-right"></i></button>
+        </div>
+      </div>
+
+      <!-- Blog 3 -->
+      <div class="blog-card" data-category="marketing" data-aos="fade-up" data-aos-delay="200" onclick="openArticle(2)">
+        <div class="blog-img">
+          <span class="blog-category">Marketing</span>
+          <img src="https://images.unsplash.com/photo-1533750516457-a7f992034fec?w=600&h=400&fit=crop" alt="Social Media Strategy">
+        </div>
+        <div class="blog-content">
+          <div class="blog-meta">
+            <span><i class="fas fa-user"></i> Ali Raza</span>
+            <span><i class="fas fa-calendar"></i> Feb 28, 2024</span>
+            <span><i class="fas fa-clock"></i> 7 min</span>
+          </div>
+          <h3 class="blog-title">How to Build a Winning Social Media Strategy</h3>
+          <p class="blog-excerpt">Learn proven strategies to grow your social media presence and drive meaningful engagement...</p>
+          <button class="read-more" onclick="event.stopPropagation(); openArticle(2)">Read Full Article <i class="fas fa-arrow-right"></i></button>
+        </div>
+      </div>
+
+      <!-- Blog 4 -->
+      <div class="blog-card" data-category="business" data-aos="fade-up" data-aos-delay="300" onclick="openArticle(3)">
+        <div class="blog-img">
+          <span class="blog-category">Business</span>
+          <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop" alt="Startup Journey">
+        </div>
+        <div class="blog-content">
+          <div class="blog-meta">
+            <span><i class="fas fa-user"></i> Saqib Hussain</span>
+            <span><i class="fas fa-calendar"></i> Feb 20, 2024</span>
+            <span><i class="fas fa-clock"></i> 8 min</span>
+          </div>
+          <h3 class="blog-title">From Startup to Scale: A Founder's Journey</h3>
+          <p class="blog-excerpt">Insights and lessons learned from building a successful digital agency from the ground up...</p>
+          <button class="read-more" onclick="event.stopPropagation(); openArticle(3)">Read Full Article <i class="fas fa-arrow-right"></i></button>
+        </div>
+      </div>
+
+      <!-- Blog 5 -->
+      <div class="blog-card" data-category="ai" data-aos="fade-up" data-aos-delay="400" onclick="openArticle(4)">
+        <div class="blog-img">
+          <span class="blog-category">AI & Tech</span>
+          <img src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=600&h=400&fit=crop" alt="Machine Learning">
+        </div>
+        <div class="blog-content">
+          <div class="blog-meta">
+            <span><i class="fas fa-user"></i> Zara Khan</span>
+            <span><i class="fas fa-calendar"></i> Feb 15, 2024</span>
+            <span><i class="fas fa-clock"></i> 6 min</span>
+          </div>
+          <h3 class="blog-title">Machine Learning vs Deep Learning: What's the Difference?</h3>
+          <p class="blog-excerpt">Understanding the key differences between ML and DL and when to use each approach...</p>
+          <button class="read-more" onclick="event.stopPropagation(); openArticle(4)">Read Full Article <i class="fas fa-arrow-right"></i></button>
+        </div>
+      </div>
+
+      <!-- Blog 6 -->
+      <div class="blog-card" data-category="design" data-aos="fade-up" data-aos-delay="500" onclick="openArticle(5)">
+        <div class="blog-img">
+          <span class="blog-category">Design</span>
+          <img src="https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?w=600&h=400&fit=crop" alt="Mobile Design">
+        </div>
+        <div class="blog-content">
+          <div class="blog-meta">
+            <span><i class="fas fa-user"></i> Iqra Aram</span>
+            <span><i class="fas fa-calendar"></i> Feb 10, 2024</span>
+            <span><i class="fas fa-clock"></i> 5 min</span>
+          </div>
+          <h3 class="blog-title">Mobile-First Design: Why It Matters More Than Ever</h3>
+          <p class="blog-excerpt">The importance of mobile-first design approach for modern websites and applications...</p>
+          <button class="read-more" onclick="event.stopPropagation(); openArticle(5)">Read Full Article <i class="fas fa-arrow-right"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== ARTICLE DETAIL VIEW ===== -->
+    <div class="article-detail" id="articleDetail">
+      <button class="back-to-blog" onclick="closeArticle()">
+        <i class="fas fa-arrow-left"></i> Back to Blog
+      </button>
+      <div id="articleContent"></div>
+    </div>
+
+    <!-- Pagination (Hidden when article open) -->
+    <div class="pagination" id="pagination" data-aos="fade-up">
+      <div class="page-btn active">1</div>
+      <div class="page-btn">2</div>
+      <div class="page-btn">3</div>
+      <div class="page-btn"><i class="fas fa-chevron-right"></i></div>
+    </div>
+  </div>
+</section>
+
+<!-- Newsletter Section -->
+<section class="newsletter-section">
+  <div class="container" data-aos="fade-up">
+    <i class="fas fa-envelope-open-text" style="font-size: 3rem; margin-bottom: 20px; opacity: 0.4;"></i>
+    <h2>Subscribe to Our <span class="gradient-text">Newsletter</span></h2>
+    <p>Get the latest insights delivered straight to your inbox</p>
+    <div class="newsletter-form">
+      <input type="email" placeholder="Enter your email address" class="newsletter-input" id="newsletterEmail">
+      <button class="btn-primary" id="newsletterBtn">Subscribe</button>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-logo"><span class="gradient-text">NEXUS</span></div>
+        <p class="footer-about">Crafting digital excellence since 2020. We help brands dominate the digital landscape with innovative solutions.</p>
+        <div class="footer-social">
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-linkedin-in"></i></a>
+          <a href="#"><i class="fab fa-behance"></i></a>
+          <a href="#"><i class="fab fa-dribbble"></i></a>
+          <a href="#"><i class="fab fa-github"></i></a>
+        </div>
+      </div>
+      <div>
+        <h3 class="footer-title">Quick Links</h3>
+        <ul class="footer-links">
+          <li><a href="index.html">→ Home</a></li>
+          <li><a href="services.html">→ Services</a></li>
+          <li><a href="work.html">→ Portfolio</a></li>
+          <li><a href="team.html">→ Our Team</a></li>
+          <li><a href="blog.html">→ Blog</a></li>
+          <li><a href="contact.html">→ Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="footer-title">Services</h3>
+        <ul class="footer-links">
+          <li><a href="services.html">→ Web Development</a></li>
+          <li><a href="services.html">→ AI Automation</a></li>
+          <li><a href="services.html">→ Brand Identity</a></li>
+          <li><a href="services.html">→ Digital Marketing</a></li>
+          <li><a href="services.html">→ E-Commerce</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="footer-title">Contact Us</h3>
+        <div class="footer-contact-info"><i class="fas fa-map-marker-alt"></i> 123 Innovation Drive, Dubai, UAE</div>
+        <div class="footer-contact-info"><i class="fas fa-envelope"></i> hello@nexus.agency</div>
+        <div class="footer-contact-info"><i class="fas fa-phone"></i> +92 321 5749975</div>
+      </div>
+    </div>
+    <div class="footer-bottom"><p>© 2025 Nexus Digital Agency. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p></div>
+  </div>
+</footer>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+  AOS.init({ duration: 800, once: false });
+
+  // ===== BLOG DATA =====
+  const blogData = [
+    {
+      category: "AI & Tech",
+      title: "10 AI Tools That Will Transform Your Workflow in 2024",
+      author: "Sarah Khan",
+      date: "March 10, 2024",
+      readTime: "6 min read",
+      content: `
+        <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&h=500&fit=crop" alt="AI Tools">
+        <p>The landscape of work is changing rapidly. Artificial intelligence is no longer a futuristic concept — it's here, and it's transforming the way we work, create, and innovate. In 2024, AI tools have become essential for professionals across every industry.</p>
+        <h2>1. ChatGPT-4</h2>
+        <p>The latest iteration of OpenAI's language model has set new standards for natural language processing. From content creation to complex problem-solving, ChatGPT-4 handles tasks with unprecedented accuracy and nuance. It's not just a chatbot — it's a creative partner, a research assistant, and a coding companion rolled into one.</p>
+        <h2>2. Midjourney V6</h2>
+        <p>Visual creation has been revolutionized by Midjourney. The V6 update brings photorealism and artistic versatility that rivals professional designers. Generate stunning visuals, concept art, and marketing materials in seconds. It's transforming how brands approach visual storytelling.</p>
+        <h2>3. GitHub Copilot</h2>
+        <p>Developers, rejoice! GitHub Copilot has evolved to become an indispensable coding assistant. It writes code, suggests fixes, and accelerates development cycles. Whether you're building a SaaS platform or debugging a complex system, Copilot is like having a senior developer by your side.</p>
+        <h2>4. Notion AI</h2>
+        <p>Knowledge management meets artificial intelligence. Notion AI helps you organize, summarize, and extract insights from your notes and documents. It's perfect for teams that need to collaborate on complex projects and maintain a single source of truth.</p>
+        <h2>5. Runway Gen-2</h2>
+        <p>Video creation has never been this accessible. Runway Gen-2 allows you to generate professional-quality videos from simple text prompts. It's a game-changer for content creators, marketers, and anyone who needs to produce visual content at scale.</p>
+        <h3>Conclusion</h3>
+        <p>The AI revolution is not coming — it's already here. These tools are just the beginning. As technology continues to evolve, we can expect even more powerful and innovative solutions that will reshape industries and redefine what's possible.</p>
+      `,
+      authorImage: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop",
+      authorBio: "Sarah has been covering AI and emerging technologies for over 5 years. She helps businesses integrate AI solutions for maximum impact."
+    },
+    {
+      category: "Design",
+      title: "Minimalist Design Trends That Will Dominate 2024",
+      author: "Iqra Aram",
+      date: "March 5, 2024",
+      readTime: "5 min read",
+      content: `
+        <img src="https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&h=500&fit=crop" alt="Design Trends">
+        <p>In the ever-evolving world of design, minimalism continues to reign supreme. But the minimalism of 2024 is not the stark, cold minimalism of the past. It's warmer, more expressive, and more human-centric than ever before.</p>
+        <h2>1. Warm Minimalism</h2>
+        <p>This trend adds warmth to the clean lines and simplicity of minimalism. Think natural textures, warm wood tones, and soft lighting. It's about creating spaces that feel inviting and lived-in, not sterile and cold.</p>
+        <h2>2. Brutalist Minimalism</h2>
+        <p>Brutalist minimalism embraces raw, unfinished materials like exposed concrete, steel, and glass. It's bold, industrial, and makes a powerful statement. This trend is perfect for brands that want to convey strength and authenticity.</p>
+        <h2>3. Neo-Minimalism</h2>
+        <p>Neo-minimalism injects subtle personality into minimalism through unexpected color accents, playful typography, and gentle curves. It's minimalism with a wink — professional, but not boring.</p>
+        <h2>4. Sustainable Minimalism</h2>
+        <p>Sustainability meets minimalism in this trend. It focuses on using eco-friendly materials, designing for longevity, and embracing imperfections that tell a story. It's not just about looking good — it's about doing good.</p>
+        <h3>The Future of Design</h3>
+        <p>The minimalism of 2024 is about intention. It's about stripping away the unnecessary to reveal what truly matters. It's not just a design choice — it's a philosophy that values clarity, humanity, and sustainability.</p>
+      `,
+      authorImage: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop",
+      authorBio: "Iqra leads our creative vision with a focus on elegant, user-centric design that tells compelling brand stories."
+    },
+    {
+      category: "Marketing",
+      title: "How to Build a Winning Social Media Strategy",
+      author: "Ali Raza",
+      date: "February 28, 2024",
+      readTime: "7 min read",
+      content: `
+        <img src="https://images.unsplash.com/photo-1533750516457-a7f992034fec?w=800&h=500&fit=crop" alt="Social Media Strategy">
+        <p>Social media has become an essential part of any business's marketing strategy. But with so many platforms and constant algorithm changes, it can be challenging to know where to focus your efforts.</p>
+        <h2>1. Define Your Goals</h2>
+        <p>Before you start posting, it's crucial to define what you want to achieve. Are you looking to increase brand awareness, generate leads, or drive sales? Your goals will determine your strategy.</p>
+        <h2>2. Know Your Audience</h2>
+        <p>Understanding your target audience is key to creating content that resonates. Research their demographics, interests, and pain points. Use this information to tailor your content and messaging.</p>
+        <h2>3. Choose the Right Platforms</h2>
+        <p>Not all social media platforms are created equal. Focus on the platforms where your audience spends the most time. LinkedIn for B2B, Instagram for visual brands, TikTok for younger audiences.</p>
+        <h2>4. Create Engaging Content</h2>
+        <p>Quality content is the backbone of any successful social media strategy. Mix up your content types — videos, images, carousels, and text posts. And don't forget to engage with your audience!</p>
+        <h2>5. Analyze and Optimize</h2>
+        <p>Regularly review your analytics to see what's working and what's not. Use these insights to optimize your strategy and improve your results over time.</p>
+        <h3>Conclusion</h3>
+        <p>Building a winning social media strategy takes time and effort, but the rewards are worth it. By following these steps, you can create a strategy that drives real results for your business.</p>
+      `,
+      authorImage: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop",
+      authorBio: "Ali is our marketing expert with a passion for helping brands grow through data-driven strategies and creative storytelling."
+    },
+    {
+      category: "Business",
+      title: "From Startup to Scale: A Founder's Journey",
+      author: "Saqib Hussain",
+      date: "February 20, 2024",
+      readTime: "8 min read",
+      content: `
+        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=500&fit=crop" alt="Startup Journey">
+        <p>Building a startup is one of the most challenging and rewarding experiences an entrepreneur can undertake. In this article, I'll share my journey from founding Nexus to scaling it into a successful digital agency.</p>
+        <h2>The Beginning</h2>
+        <p>Nexus started in a small apartment with just two people and a big dream. We had a vision of creating a digital agency that would help businesses thrive in the digital age. We had no clients, no funding, and no reputation. All we had was passion and determination.</p>
+        <h2>The Early Struggles</h2>
+        <p>The first year was tough. We worked long hours, faced countless rejections, and had to learn everything from scratch. But we persevered because we believed in our vision.</p>
+        <h2>The Turning Point</h2>
+        <p>Our first major client came through a referral. They believed in us and gave us a chance to prove ourselves. We delivered beyond their expectations, and that project became the foundation of our reputation.</p>
+        <h2>Scaling Up</h2>
+        <p>As our reputation grew, so did our team and client base. We invested in talent, streamlined our processes, and expanded our service offerings. Today, Nexus serves clients across the globe.</p>
+        <h3>Key Takeaways</h3>
+        <p>Success doesn't happen overnight. It requires hard work, dedication, and a willingness to learn from failures. If you're on your own startup journey, remember: every great business started as a small idea.</p>
+      `,
+      authorImage: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop",
+      authorBio: "Saqib is the Co-Founder and CTO of Nexus. He has over 10 years of experience in tech and a passion for building products that make a difference."
+    },
+    {
+      category: "AI & Tech",
+      title: "Machine Learning vs Deep Learning: What's the Difference?",
+      author: "Zara Khan",
+      date: "February 15, 2024",
+      readTime: "6 min read",
+      content: `
+        <img src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=800&h=500&fit=crop" alt="Machine Learning vs Deep Learning">
+        <p>Machine Learning and Deep Learning are two of the most talked-about terms in the tech world today. But what exactly do they mean, and how are they different?</p>
+        <h2>What is Machine Learning?</h2>
+        <p>Machine Learning (ML) is a subset of artificial intelligence that enables systems to learn and improve from experience without being explicitly programmed. It uses algorithms to parse data, learn from it, and make predictions or decisions.</p>
+        <h2>What is Deep Learning?</h2>
+        <p>Deep Learning is a subset of Machine Learning that uses neural networks with many layers (deep neural networks) to analyze data. It's inspired by the structure and function of the human brain.</p>
+        <h2>Key Differences</h2>
+        <ul>
+          <li><strong>Data:</strong> ML works well with smaller datasets, while DL requires large amounts of data.</li>
+          <li><strong>Hardware:</strong> DL requires more powerful hardware (GPUs) than traditional ML.</li>
+          <li><strong>Training Time:</strong> DL models take longer to train than ML models.</li>
+          <li><strong>Feature Engineering:</strong> ML requires manual feature extraction, while DL automatically learns features.</li>
+        </ul>
+        <h3>When to Use Each</h3>
+        <p>Choose Machine Learning for simpler problems with smaller datasets. Choose Deep Learning for complex problems like image recognition, natural language processing, and speech recognition.</p>
+      `,
+      authorImage: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop",
+      authorBio: "Zara is our AI and machine learning specialist. She helps businesses harness the power of AI to solve complex problems and drive innovation."
+    },
+    {
+      category: "Design",
+      title: "Mobile-First Design: Why It Matters More Than Ever",
+      author: "Iqra Aram",
+      date: "February 10, 2024",
+      readTime: "5 min read",
+      content: `
+        <img src="https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?w=800&h=500&fit=crop" alt="Mobile-First Design">
+        <p>With over 60% of web traffic coming from mobile devices, designing for mobile first is no longer a luxury — it's a necessity. In this article, we'll explore why mobile-first design matters and how to implement it effectively.</p>
+        <h2>What is Mobile-First Design?</h2>
+        <p>Mobile-first design is an approach where you design for the smallest screen first and then scale up to larger screens. This ensures that the mobile experience is prioritized and optimized.</p>
+        <h2>Why Mobile-First?</h2>
+        <ul>
+          <li><strong>Better User Experience:</strong> Mobile users have different needs and behaviors than desktop users.</li>
+          <li><strong>Improved Performance:</strong> Mobile-first designs tend to be lighter and faster.</li>
+          <li><strong>SEO Benefits:</strong> Google prioritizes mobile-friendly websites in search rankings.</li>
+          <li><strong>Future-Proofing:</strong> With the rise of new devices, mobile-first design ensures compatibility.</li>
+        </ul>
+        <h2>How to Implement Mobile-First Design</h2>
+        <p>Start by focusing on the most important content and functionality. Use responsive design techniques, optimize images, and ensure touch targets are large enough. Test on real devices and iterate based on feedback.</p>
+        <h3>Conclusion</h3>
+        <p>Mobile-first design is not just about making your website look good on mobile — it's about creating a seamless experience for users regardless of the device they're using. It's an approach that benefits both users and businesses.</p>
+      `,
+      authorImage: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop",
+      authorBio: "Iqra leads our creative vision with a focus on elegant, user-centric design that tells compelling brand stories."
+    }
+  ];
+
+  // ===== FUNCTIONS =====
+  function openArticle(index) {
+    const data = blogData[index];
+    const articleContent = document.getElementById('articleContent');
+    const blogGrid = document.getElementById('blogGrid');
+    const blogFilter = document.getElementById('blogFilter');
+    const pagination = document.getElementById('pagination');
+    const articleDetail = document.getElementById('articleDetail');
+    const heroContent = document.getElementById('heroContent');
+
+    // Hide blog grid, filter, pagination
+    blogGrid.classList.add('hidden');
+    blogFilter.classList.add('hidden');
+    pagination.style.display = 'none';
+    heroContent.style.display = 'none';
+
+    // Show article
+    articleDetail.classList.add('active');
+    
+    // Populate article
+    articleContent.innerHTML = `
+      <div class="article-header">
+        <span class="section-tag"><i class="fas fa-tag"></i> ${data.category}</span>
+        <h1>${data.title}</h1>
+        <div class="article-meta">
+          <span><i class="fas fa-user"></i> ${data.author}</span>
+          <span><i class="fas fa-calendar"></i> ${data.date}</span>
+          <span><i class="fas fa-clock"></i> ${data.readTime}</span>
+        </div>
+      </div>
+      <div class="article-body">
+        ${data.content}
+        <div class="article-author-box">
+          <img src="${data.authorImage}" alt="${data.author}">
+          <div>
+            <h4 style="font-size: 1.2rem;">${data.author}</h4>
+            <p style="color: #666; margin-top: 5px;">${data.authorBio}</p>
+          </div>
+        </div>
+      </div>
+    `;
+
+    // Scroll to top of section
+    document.getElementById('blogSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function closeArticle() {
+    const blogGrid = document.getElementById('blogGrid');
+    const blogFilter = document.getElementById('blogFilter');
+    const pagination = document.getElementById('pagination');
+    const articleDetail = document.getElementById('articleDetail');
+    const heroContent = document.getElementById('heroContent');
+
+    blogGrid.classList.remove('hidden');
+    blogFilter.classList.remove('hidden');
+    pagination.style.display = 'flex';
+    heroContent.style.display = 'block';
+    articleDetail.classList.remove('active');
+    
+    // Scroll to top
+    document.getElementById('blogSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  // ===== BLOG CATEGORY FILTER =====
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const blogCards = document.querySelectorAll('.blog-card');
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      
+      const filterValue = this.getAttribute('data-filter');
+      
+      blogCards.forEach(card => {
+        if (filterValue === 'all' || card.getAttribute('data-category') === filterValue) {
+          card.style.display = 'flex';
+          card.style.animation = 'fadeIn 0.5s ease forwards';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  });
+
+  // ===== PAGINATION =====
+  document.querySelectorAll('.page-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.page-btn').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+
+  // ===== NEWSLETTER =====
+  document.getElementById('newsletterBtn')?.addEventListener('click', function() {
+    const email = document.getElementById('newsletterEmail').value;
+    if (email && email.includes('@')) {
+      alert('Thank you for subscribing, ' + email + '!');
+      document.getElementById('newsletterEmail').value = '';
+    } else {
+      alert('Please enter a valid email address.');
+    }
+  });
+
+  // ===== MOBILE MENU =====
+  const menuToggle = document.getElementById('menuToggle');
+  const mobileNav = document.getElementById('mobileNav');
+  const overlay = document.getElementById('navOverlay');
+  const menuIcon = document.getElementById('menuIcon');
+
+  if (menuToggle && mobileNav && overlay) {
+    menuToggle.addEventListener('click', function(e) {
+      e.stopPropagation();
+      mobileNav.classList.toggle('active');
+      overlay.classList.toggle('active');
+      if (mobileNav.classList.contains('active')) {
+        menuIcon.className = 'fas fa-times';
+        document.body.style.overflow = 'hidden';
+      } else {
+        menuIcon.className = 'fas fa-bars';
+        document.body.style.overflow = '';
+      }
+    });
+    overlay.addEventListener('click', function() {
+      mobileNav.classList.remove('active');
+      overlay.classList.remove('active');
+      menuIcon.className = 'fas fa-bars';
+      document.body.style.overflow = '';
+    });
+    document.querySelectorAll('.mobile-nav a').forEach(function(link) {
+      link.addEventListener('click', function() {
+        mobileNav.classList.remove('active');
+        overlay.classList.remove('active');
+        menuIcon.className = 'fas fa-bars';
+        document.body.style.overflow = '';
+      });
+    });
+    window.addEventListener('resize', function() {
+      if (window.innerWidth > 768) {
+        mobileNav.classList.remove('active');
+        overlay.classList.remove('active');
+        menuIcon.className = 'fas fa-bars';
+        document.body.style.overflow = '';
+      }
+    });
+  }
+
+  // ===== BACK TO TOP =====
+  const backToTop = document.getElementById('backToTop');
+  window.addEventListener('scroll', () => backToTop.classList.toggle('show', window.scrollY > 300));
+  if(backToTop) backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+  // ===== MOUSE TRAIL =====
+  const trail = document.querySelector('.mouse-trail');
+  const dot = document.querySelector('.trail-dot');
+  document.addEventListener('mousemove', (e) => {
+    if(trail) trail.style.transform = `translate(${e.clientX - 15}px, ${e.clientY - 15}px)`;
+    if(dot) dot.style.transform = `translate(${e.clientX - 3}px, ${e.clientY - 3}px)`;
+  });
+</script>
+
+</body>
+</html>
